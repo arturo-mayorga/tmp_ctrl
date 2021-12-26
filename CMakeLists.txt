@@ -19,7 +19,11 @@ enable_testing()
 add_executable(
   hello_test
   src/tests/hello_test.cc
+  src/tests/message_reader_test.cc
+  src/message-reader.cpp
+  src/CircularBuffer.tpp
 )
+
 target_link_libraries(
   hello_test
   gtest_main
