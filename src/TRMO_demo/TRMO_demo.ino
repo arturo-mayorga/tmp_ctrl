@@ -1,21 +1,16 @@
-#include <Wire.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
 
-#include <OneWire.h>
-#include <DallasTemperature.h>
+
+#include "dallas-temperature-wapper-ino-impl.h"
+#include "ssd-wrapper-ino-impl.h"
 
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 32
 
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire);
+SsdWrapperInoImpl display(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 // Data wire is plugged into pin 2 on the Arduino
 #define TEMP_ONE_WIRE_BUS 2
-// Setup a oneWire instance to communicate with any OneWire devices (not just Maxim/Dallas temperature ICs)
-OneWire tempOneWire(TEMP_ONE_WIRE_BUS);
-// Pass our oneWire reference to Dallas Temperature.
-DallasTemperature tempSensor(&tempOneWire);
+DallasTemperatureWrapperInoImpl tempSensor(TEMP_ONE_WIRE_BUS);
 
 int tempReading = 0;
 

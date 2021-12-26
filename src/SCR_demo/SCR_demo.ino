@@ -1,11 +1,9 @@
-#include <Wire.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
+#include "ssd-wrapper-ino-impl.h"
 
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 32
 
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire);
+SsdWrapperInoImpl display(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 void setup()
 {
