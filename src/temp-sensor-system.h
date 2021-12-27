@@ -3,17 +3,19 @@
 
 #include "app-system.h"
 
-#include "i-ssd-wrapper.h"
+#include "i-dallas-temperature-wrapper.h"
 
 class TempSensorSystem : public AppSystem
 {
 private:
-    ISsdWrapper *_issd;
+    IDallasTemperatureWrapper *_dallasTempW;
+    unsigned long _lastUpdateTime;
 
 public:
-    TempSensorSystem(AppState *state, ISsdWrapper *issd) : AppSystem(state)
+    TempSensorSystem(AppState *state, IDallasTemperatureWrapper *dallasTempW) : AppSystem(state)
     {
-        _issd = issd;
+        _dallasTempW = dallasTempW;
+        _lastUpdateTime = 0;
     }
     virtual void setup();
     virtual void update(unsigned long time); // Time in milliseconds
