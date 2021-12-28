@@ -19,6 +19,8 @@ enable_testing()
 add_executable(
   hello_test
   src/tests/hello_test.cc
+  src/tests/temp-sensor-system.t.cpp
+  src/temp-sensor-system.cpp
   src/tests/message_reader_test.cc
   src/message-reader.cpp
   src/CircularBuffer.tpp
