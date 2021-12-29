@@ -4,16 +4,12 @@
 struct InputState
 {
     unsigned long inputButtonTime;
-    int inputButtonState;
     unsigned long inputKnobTime;
-    int inputKnobState;
 
     InputState()
     {
         inputButtonTime = 0;
-        inputButtonState = 0;
         inputKnobTime = 0;
-        inputKnobState = 0;
     }
 };
 

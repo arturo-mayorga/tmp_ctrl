@@ -26,6 +26,9 @@ add_executable(
   src/tests/scr-system.t.cpp
   src/scr-system.cpp
 
+  src/tests/rotor-system.t.cpp
+  src/rotor-system.cpp
+
   src/tests/message_reader_test.cc
   src/message-reader.cpp
   src/CircularBuffer.tpp
