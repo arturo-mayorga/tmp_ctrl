@@ -12,7 +12,7 @@ private:
     unsigned long _lastUpdateTime;
 
 public:
-    TempSensorSystem(AppState *state, IDallasTemperatureWrapper *dallasTempW) : AppSystem(state)
+    TempSensorSystem(AppState *state, ILogger *logger, IDallasTemperatureWrapper *dallasTempW) : AppSystem(state, logger)
     {
         _dallasTempW = dallasTempW;
         _lastUpdateTime = 0;

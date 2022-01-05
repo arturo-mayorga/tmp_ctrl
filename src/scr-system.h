@@ -12,7 +12,7 @@ private:
     unsigned long _lastUpdateTime;
 
 public:
-    ScrSystem(AppState *state, ISsdWrapper *scrDevice) : AppSystem(state)
+    ScrSystem(AppState *state, ILogger *logger, ISsdWrapper *scrDevice) : AppSystem(state, logger)
     {
         _scrDevice = scrDevice;
         _lastUpdateTime = 0;

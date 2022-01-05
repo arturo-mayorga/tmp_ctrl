@@ -5,6 +5,7 @@ void RotorSystem::setup()
     _pinWrapper->pinMode(_clkPin, _clkPinMode);
     _pinWrapper->pinMode(_dtPin, _dtPinMode);
     _pinWrapper->pinMode(_swPin, _swPinMode);
+    _logger->println("rotor-system: Ready");
 }
 
 void RotorSystem::update(unsigned long time)

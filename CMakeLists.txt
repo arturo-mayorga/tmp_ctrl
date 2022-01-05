@@ -20,6 +20,8 @@ add_executable(
   hello_test
   src/tests/hello_test.cc
 
+  src/tests/logger-test-impl.cpp
+
   src/tests/temp-sensor-system.t.cpp
   src/temp-sensor-system.cpp
 

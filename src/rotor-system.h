@@ -19,7 +19,7 @@ private:
     int _swState;
 
 public:
-    RotorSystem(AppState *state, IDigitalPinWrapper *pinWrapper, int clk_pin, int clk_pin_mode, int dt_pin, int dt_pin_mode, int sw_pin, int sw_pin_mode) : AppSystem(state)
+    RotorSystem(AppState *state, ILogger *logger, IDigitalPinWrapper *pinWrapper, int clk_pin, int clk_pin_mode, int dt_pin, int dt_pin_mode, int sw_pin, int sw_pin_mode) : AppSystem(state, logger)
     {
         _clkPin = clk_pin;
         _clkPinMode = clk_pin_mode;

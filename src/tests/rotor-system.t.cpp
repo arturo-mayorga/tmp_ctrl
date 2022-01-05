@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "../rotor-system.h"
+#include "logger-test-impl.h"
 
 class DigitalPinWrapperTestImpl : public IDigitalPinWrapper
 {
@@ -35,7 +36,8 @@ TEST(RotorSystem, Setup)
     DigitalPinWrapperTestImpl pinWrapper;
 
     AppState state;
-    RotorSystem system(&state, &pinWrapper, 0, 0, 1, 1, 2, 2);
+    LoggerTestImpl logger;
+    RotorSystem system(&state, &logger, &pinWrapper, 0, 0, 1, 1, 2, 2);
 
     pinWrapper.assertLogContents(log);
 
@@ -52,7 +54,8 @@ TEST(RotorSystem, Forward)
     DigitalPinWrapperTestImpl pinWrapper;
 
     AppState state;
-    RotorSystem system(&state, &pinWrapper, 0, 0, 1, 1, 2, 2);
+    LoggerTestImpl logger;
+    RotorSystem system(&state, &logger, &pinWrapper, 0, 0, 1, 1, 2, 2);
 
     pinWrapper.pinVals[0] = 0;
     pinWrapper.pinVals[1] = 0;
@@ -82,7 +85,8 @@ TEST(RotorSystem, Backward)
     DigitalPinWrapperTestImpl pinWrapper;
 
     AppState state;
-    RotorSystem system(&state, &pinWrapper, 0, 0, 1, 1, 2, 2);
+    LoggerTestImpl logger;
+    RotorSystem system(&state, &logger, &pinWrapper, 0, 0, 1, 1, 2, 2);
 
     pinWrapper.pinVals[0] = 0;
     pinWrapper.pinVals[1] = 0;
@@ -112,7 +116,8 @@ TEST(RotorSystem, DownUp)
     DigitalPinWrapperTestImpl pinWrapper;
 
     AppState state;
-    RotorSystem system(&state, &pinWrapper, 0, 0, 1, 1, 2, 2);
+    LoggerTestImpl logger;
+    RotorSystem system(&state, &logger, &pinWrapper, 0, 0, 1, 1, 2, 2);
 
     pinWrapper.pinVals[0] = 0;
     pinWrapper.pinVals[1] = 0;
