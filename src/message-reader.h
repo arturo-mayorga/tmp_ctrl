@@ -1,7 +1,10 @@
 #ifndef message_reader_h
 #define message_reader_h
 
+
+
 #include "CircularBuffer.h"
+
 #include "message.h"
 
 class MessageReader
@@ -18,7 +21,7 @@ private:
 public:
     MessageReader();
     bool addByte(int byte);
-    Message* getMessage();
+    Message *getMessage();
 };
 
 #endif

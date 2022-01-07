@@ -1,8 +1,15 @@
 #include "ssd-wrapper-ino-impl.h"
+#include <Arduino.h>
+
 
 bool SsdWrapperInoImpl::begin(uint8_t switchvcc, uint8_t i2caddr)
 {
-    return _display->begin(switchvcc, i2caddr);
+    Serial.println("begin ssdwrapper");
+    Serial.print(switchvcc);
+    Serial.print("  ");
+    Serial.print(i2caddr);
+    Serial.println("");
+    return _display->begin(SSD1306_SWITCHCAPVCC, i2caddr);
 }
 void SsdWrapperInoImpl::clearDisplay()
 {

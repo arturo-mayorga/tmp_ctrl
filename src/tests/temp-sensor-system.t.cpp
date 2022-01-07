@@ -2,6 +2,7 @@
 #include "../app-state.h"
 #include "../temp-sensor-system.h"
 #include "../i-dallas-temperature-wrapper.h"
+#include "logger-test-impl.h"
 
 #include <vector>
 #include <string>
@@ -56,7 +57,8 @@ TEST(TempSensorSystem, Constructor)
     tempWLog.push_back("create 3");
 
     AppState state;
-    TempSensorSystem tSys(&state, &tempW);
+    LoggerTestImpl logger;
+    TempSensorSystem tSys(&state, &logger, &tempW);
 
     tempW.assertLogContents(tempWLog);
 }
@@ -68,7 +70,8 @@ TEST(TempSensorSystem, Setup)
     tempWLog.push_back("create 3");
 
     AppState state;
-    TempSensorSystem tSys(&state, &tempW);
+    LoggerTestImpl logger;
+    TempSensorSystem tSys(&state, &logger, &tempW);
 
     tSys.setup();
     tempWLog.push_back("begin");
@@ -82,7 +85,8 @@ TEST(TempSensorSystem, InitialUpdates)
     tempWLog.push_back("create 3");
 
     AppState state;
-    TempSensorSystem tSys(&state, &tempW);
+    LoggerTestImpl logger;
+    TempSensorSystem tSys(&state, &logger, &tempW);
 
     tSys.setup();
     tempWLog.push_back("begin");
@@ -104,14 +108,15 @@ TEST(TempSensorSystem, InitialUpdates)
     EXPECT_EQ(state.currentTemp, 0.0f); // make sure the state hasn't been touched
 }
 
-TEST(TempSensorSystem, UpdateAfter2Sec)
+TEST(TempSensorSystem, UpdateAfter5Sec)
 {
     std::vector<std::string> tempWLog;
     DallasTemperatureWrapperTestImpl tempW(3);
     tempWLog.push_back("create 3");
 
     AppState state;
-    TempSensorSystem tSys(&state, &tempW);
+    LoggerTestImpl logger;
+    TempSensorSystem tSys(&state, &logger, &tempW);
 
     tSys.setup();
     tempWLog.push_back("begin");
@@ -129,6 +134,8 @@ TEST(TempSensorSystem, UpdateAfter2Sec)
     tSys.update(1999);
 
     tSys.update(2000);
+
+    tSys.update(5000);
     tempWLog.push_back("requestTemperatures");
     tempWLog.push_back("getTempFByIndex");
 
@@ -144,7 +151,8 @@ TEST(TempSensorSystem, UpdateEvery2Sec)
     tempWLog.push_back("create 3");
 
     AppState state;
-    TempSensorSystem tSys(&state, &tempW);
+    LoggerTestImpl logger;
+    TempSensorSystem tSys(&state, &logger, &tempW);
 
     tSys.setup();
     tempWLog.push_back("begin");
@@ -152,8 +160,6 @@ TEST(TempSensorSystem, UpdateEvery2Sec)
     tSys.update(0);
     tSys.update(1000);
     tSys.update(2000);
-    tempWLog.push_back("requestTemperatures");
-    tempWLog.push_back("getTempFByIndex");
 
     tSys.update(3000);
     tSys.update(4000);
@@ -183,7 +189,8 @@ TEST(TempSensorSystem, UpdateEvery2SecStaggered)
     tempWLog.push_back("create 3");
 
     AppState state;
-    TempSensorSystem tSys(&state, &tempW);
+    LoggerTestImpl logger;
+    TempSensorSystem tSys(&state, &logger, &tempW);
 
     tSys.setup();
     tempWLog.push_back("begin");
@@ -191,8 +198,6 @@ TEST(TempSensorSystem, UpdateEvery2SecStaggered)
     tSys.update(0);
     tSys.update(1999);
     tSys.update(3999);
-    tempWLog.push_back("requestTemperatures");
-    tempWLog.push_back("getTempFByIndex");
 
     tSys.update(4111);
     tempWLog.push_back("requestTemperatures");

@@ -2,6 +2,7 @@
 #include "../app-state.h"
 #include "../scr-system.h"
 #include "../i-ssd-wrapper.h"
+#include "logger-test-impl.h"
 
 #include <vector>
 #include <string>
@@ -241,7 +242,8 @@ TEST(ScrSystem, NoInputNoVideo)
 {
     SsdWrapperTestImpl device;
     AppState state;
-    ScrSystem scrSystem(&state, &device);
+    LoggerTestImpl logger;
+    ScrSystem scrSystem(&state, &logger, &device);
 
     std::vector<std::string> log;
 
@@ -251,24 +253,24 @@ TEST(ScrSystem, NoInputNoVideo)
 
     scrSystem.update(3000);
     device.assertScreen(
-        "                     ",
-        "                     ",
-        "                     ",
-        "                     ");
+        "heat                 ",
+        "            0<<`<<F<<",
+        "AT          ^^^^^^^^^",
+        "            ^^^^^^^^^");
 
     scrSystem.update(3010);
     device.assertScreen(
-        "                     ",
-        "                     ",
-        "                     ",
-        "                     ");
+        "heat                 ",
+        "            0<<`<<F<<",
+        "AT          ^^^^^^^^^",
+        "            ^^^^^^^^^");
 
     scrSystem.update(3100);
     device.assertScreen(
-        "                     ",
-        "                     ",
-        "                     ",
-        "                     ");
+        "heat                 ",
+        "            0<<`<<F<<",
+        "AT          ^^^^^^^^^",
+        "            ^^^^^^^^^");
 
     scrSystem.update(4000);
     device.assertScreen(
@@ -289,7 +291,8 @@ TEST(ScrSystem, ShowActualTempAndHide)
 {
     SsdWrapperTestImpl device;
     AppState state;
-    ScrSystem scrSystem(&state, &device);
+    LoggerTestImpl logger;
+    ScrSystem scrSystem(&state, &logger, &device);
 
     std::vector<std::string> log;
 
@@ -302,10 +305,10 @@ TEST(ScrSystem, ShowActualTempAndHide)
     state.currentTemp = 73;
     scrSystem.update(32);
     device.assertScreen(
-        "heat                 ",
-        "         7<<3<<`<<F<<",
-        "AT       ^^^^^^^^^^^^",
-        "         ^^^^^^^^^^^^");
+        "                     ",
+        "                     ",
+        "                     ",
+        "                     ");
 
     state.currentTemp = 74;
     scrSystem.update(300);
@@ -325,7 +328,7 @@ TEST(ScrSystem, ShowActualTempAndHide)
         "         ^^^^^^^^^^^^");
 
     state.currentTemp = 76;
-    scrSystem.update(3000);
+    scrSystem.update(5000);
     device.assertScreen(
         "                     ",
         "                     ",
@@ -337,7 +340,8 @@ TEST(ScrSystem, ShowTargetTempAndHide)
 {
     SsdWrapperTestImpl device;
     AppState state;
-    ScrSystem scrSystem(&state, &device);
+    LoggerTestImpl logger;
+    ScrSystem scrSystem(&state, &logger, &device);
 
     std::vector<std::string> log;
 
@@ -351,14 +355,14 @@ TEST(ScrSystem, ShowTargetTempAndHide)
     state.targetTemp = 8;
     scrSystem.update(32);
     device.assertScreen(
-        "heat                 ",
-        "            8<<`<<F<<",
-        "TT          ^^^^^^^^^",
-        "            ^^^^^^^^^");
+        "                     ",
+        "                     ",
+        "                     ",
+        "                     ");
 
     state.currentTemp = 74;
     state.targetTemp = 9;
-    scrSystem.update(300);
+    scrSystem.update(1999);
     device.assertScreen(
         "heat                 ",
         "            9<<`<<F<<",
@@ -368,16 +372,16 @@ TEST(ScrSystem, ShowTargetTempAndHide)
     state.currentTemp = 75;
     state.targetTemp = 10;
     state.connectionStatus = 1;
-    scrSystem.update(2000);
+    scrSystem.update(3000);
     device.assertScreen(
         "heat             cnnt",
-        "         1<<0<<`<<F<<",
-        "TT       ^^^^^^^^^^^^",
+        "         7<<5<<`<<F<<",
+        "AT       ^^^^^^^^^^^^",
         "         ^^^^^^^^^^^^");
 
     state.currentTemp = 76;
     state.targetTemp = 11;
-    scrSystem.update(3000);
+    scrSystem.update(5000);
     device.assertScreen(
         "                     ",
         "                     ",

@@ -1,4 +1,5 @@
 #include "digital-pin-wapper-ino-impl.h"
+#include <Arduino.h>
 
 // these functions are to avoid scope confusion
 // when calling the standard arduino pin functions
