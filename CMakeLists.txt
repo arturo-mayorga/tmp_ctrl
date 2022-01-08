@@ -33,7 +33,9 @@ add_executable(
 
   src/tests/message_reader_test.cc
   src/message-reader.cpp
-  src/CircularBuffer.tpp
+
+  src/tests/pid-controller.t.cpp
+  src/pid-controller.cpp
 )
 
 target_link_libraries(
