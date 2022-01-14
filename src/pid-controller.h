@@ -16,7 +16,7 @@ private:
 public:
     PidController(float min, float max, float p, float i, float d);
 
-    float calculate(float targetValue, float currentValue, float dt);
+    virtual float calculate(float targetValue, float currentValue, float dt);
 };
 
 #endif

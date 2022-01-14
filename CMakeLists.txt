@@ -36,6 +36,9 @@ add_executable(
 
   src/tests/pid-controller.t.cpp
   src/pid-controller.cpp
+
+  src/tests/pid-system.t.cpp
+  src/pid-system.cpp
 )
 
 target_link_libraries(
