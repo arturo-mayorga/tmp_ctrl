@@ -8,6 +8,9 @@
 
 #include "logger-ino-impl.h"
 
+#include "pid-controller.h"
+#include "pid-system.h"
+
 AppState state;
 LoggerInoImpl logger;
 
@@ -28,12 +31,18 @@ TempSensorSystem tempS(&state, &logger, &tempSensor);
 SsdWrapperInoImpl display(SCREEN_WIDTH, SCREEN_HEIGHT);
 ScrSystem scrS(&state, &logger, &display);
 
+// pid terms from: 
+// https://docs.google.com/spreadsheets/d/1ZyF8wiXPTGjPsN_8meO1MuW2mdlZdHpoTNc9iJ_rtFQ/edit?usp=sharing
+PidController pidController(0, 100, 30, 0.00003f, 4);
+PidSystem pidS(&state, &logger, &pidController);
+
 void setup()
 {
     Serial.begin(38400);
     rotorS.setup();
     tempS.setup();
     scrS.setup();
+    pidS.setup();
     Serial.println("READY ******");
 }
 
@@ -43,4 +52,5 @@ void loop()
     rotorS.update(t);
     tempS.update(t);
     scrS.update(t);
+    pidS.update(t);
 }
