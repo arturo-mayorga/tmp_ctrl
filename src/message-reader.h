@@ -17,6 +17,7 @@ private:
     int _numDelim;
     bool _processMessage();
     void _clearUntilStart(bool forceInitialShift);
+    void _printBuffer();
 
 public:
     MessageReader();
