@@ -8,6 +8,7 @@ class LoggerInoImpl : public ILogger
 public:
     virtual void print(const char *s);
     virtual void print(int i);
+    virtual void print(char c);
     virtual void println(const char *s);
 };
 

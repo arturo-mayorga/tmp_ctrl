@@ -4,14 +4,15 @@
 
 
 #include "CircularBuffer.h"
-
 #include "message.h"
+#include "i-logger.h"
 
 class MessageReader
 {
 private:
     CircularBuffer<int, 100> buffer;
     Message *_msg;
+    ILogger *_logger;
     char _paramBuffer[50];
     int _currentIndx;
     int _numDelim;
@@ -20,7 +21,7 @@ private:
     void _printBuffer();
 
 public:
-    MessageReader();
+    MessageReader(ILogger *logger);
     bool addByte(int byte);
     Message *getMessage();
 };

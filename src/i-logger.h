@@ -6,6 +6,7 @@ class ILogger
 public:
     virtual void print(const char *s) = 0;
     virtual void print(int i) = 0;
+    virtual void print(char c) = 0;
     virtual void println(const char *s) = 0;
 };
 

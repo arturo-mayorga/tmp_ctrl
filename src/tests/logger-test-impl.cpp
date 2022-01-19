@@ -1,15 +1,19 @@
 #include "logger-test-impl.h"
-
+#include <stdio.h>
 
 void LoggerTestImpl::print(const char *s)
 {
-    // tbd
+    printf(s);
 }
 void LoggerTestImpl::print(int i)
 {
-    // tbd
+    printf("%d", i);
+}
+void LoggerTestImpl::print(char c)
+{
+    printf("%c", c);
 }
 void LoggerTestImpl::println(const char *s)
 {
-    // tbd
+    printf("%s\n", s);
 }

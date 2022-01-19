@@ -1,9 +1,8 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include "message-reader.h"
 
-MessageReader::MessageReader()
-    : _msg(NULL), _currentIndx(0), _numDelim(0)
+MessageReader::MessageReader(ILogger *logger)
+    : _msg(NULL), _currentIndx(0), _numDelim(0), _logger(logger)
 {
 }
 
@@ -11,10 +10,11 @@ bool MessageReader::addByte(int byte)
 {
     this->buffer.push(byte);
     bool hasMessage = this->_processMessage();
+    this->_printBuffer();
     return hasMessage;
 }
 
-Message* MessageReader::getMessage()
+Message *MessageReader::getMessage()
 {
     return this->_msg;
 }
@@ -36,12 +36,13 @@ void MessageReader::_clearUntilStart(bool forceInitialShift)
     }
 }
 
-void MessageReader::_printBuffer(){
+void MessageReader::_printBuffer()
+{
     for (int i = 0; i < this->buffer.size(); i++)
     {
-        printf("%c", this->buffer[i]);
+        _logger->print((char)this->buffer[i]);
     }
-    printf("\n");
+    _logger->println("");
 }
 
 bool MessageReader::_processMessage()
@@ -93,7 +94,7 @@ bool MessageReader::_processMessage()
 
             int j = 3; //the first valid param char is always at index 3
             int paramBufferOffset = j;
-            
+
             //the value of i is one more than the index value of where end token is
             while (j < this->_currentIndx)
             {

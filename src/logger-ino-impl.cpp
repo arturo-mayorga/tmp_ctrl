@@ -9,6 +9,10 @@ void LoggerInoImpl::print(int i)
 {
     Serial.print(i);
 }
+void LoggerInoImpl::print(char c)
+{
+    Serial.print(c);
+}
 void LoggerInoImpl::println(const char *s)
 {
     Serial.println(s);
