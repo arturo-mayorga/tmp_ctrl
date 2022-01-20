@@ -1,18 +1,20 @@
 #include <stdlib.h>
 #include "message-reader.h"
 
-MessageReader::MessageReader()
-    : _msg(NULL), _currentIndx(0), _numDelim(0)
+MessageReader::MessageReader(ILogger *logger)
+    : _msg(NULL), _currentIndx(0), _numDelim(0), _logger(logger)
 {
 }
 
 bool MessageReader::addByte(int byte)
 {
     this->buffer.push(byte);
-    return this->_processMessage();
+    bool hasMessage = this->_processMessage();
+    this->_printBuffer();
+    return hasMessage;
 }
 
-Message* MessageReader::getMessage()
+Message *MessageReader::getMessage()
 {
     return this->_msg;
 }
@@ -34,6 +36,15 @@ void MessageReader::_clearUntilStart(bool forceInitialShift)
     }
 }
 
+void MessageReader::_printBuffer()
+{
+    for (int i = 0; i < this->buffer.size(); i++)
+    {
+        _logger->print((char)this->buffer[i]);
+    }
+    _logger->println("");
+}
+
 bool MessageReader::_processMessage()
 {
     this->_clearUntilStart(false);
@@ -41,25 +52,28 @@ bool MessageReader::_processMessage()
     if (this->buffer.first() == MSG_START)
     {
         bool hasMessage = false;
-        int i = this->_currentIndx;
-        while (i < this->buffer.size() && !hasMessage)
+        if (this->_currentIndx == 0) // skip first char if we just reset
         {
-            this->_currentIndx = i;
-            if (this->buffer[i] == MSG_START) // we see a start after a start, ignore everthing before
+            this->_currentIndx = 1;
+        }
+
+        while (this->_currentIndx < this->buffer.size() && !hasMessage)
+        {
+            if (this->buffer[this->_currentIndx] == MSG_START) // we see a start after a start, ignore everthing before
             {
                 this->_clearUntilStart(true);
                 return false;
             }
 
-            if (this->buffer[i] == MSG_PARAM_DELIM)
+            if (this->buffer[this->_currentIndx] == MSG_PARAM_DELIM)
             {
                 this->_numDelim++;
             }
-            if (this->buffer[i] == MSG_END)
+            if (this->buffer[this->_currentIndx] == MSG_END)
             {
                 hasMessage = true;
             }
-            i++;
+            this->_currentIndx++;
         }
         if (hasMessage)
         {
@@ -80,8 +94,9 @@ bool MessageReader::_processMessage()
 
             int j = 3; //the first valid param char is always at index 3
             int paramBufferOffset = j;
+
             //the value of i is one more than the index value of where end token is
-            while (j < (i - 1))
+            while (j < this->_currentIndx)
             {
                 if (this->buffer[j] == MSG_PARAM_DELIM || this->buffer[j] == MSG_END)
                 {
@@ -95,7 +110,7 @@ bool MessageReader::_processMessage()
                     this->_paramBuffer[j - paramBufferOffset] = (char)this->buffer[j];
                 }
                 j++;
-                if (j - paramBufferOffset > 50) //49(+1 for 0 char) is the max param length;
+                if (j - paramBufferOffset >= 50) //49(+1 for 0 char) is the max param length;
                 {
                     this->_clearUntilStart(true);
                     return false;
