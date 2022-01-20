@@ -21,4 +21,10 @@ install build tools
 
 install GitBash
 
+install CMake https://cmake.org/download/
+
+install arduino IDE https://www.arduino.cc/en/software
+
+install processing 
+
 run `./build_and_test.sh`
