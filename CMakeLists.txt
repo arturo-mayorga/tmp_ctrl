@@ -39,6 +39,9 @@ add_executable(
 
   src/tests/pid-system.t.cpp
   src/pid-system.cpp
+
+  src/tests/servo-system.t.cpp
+  src/servo-system.cpp
 )
 
 target_link_libraries(
