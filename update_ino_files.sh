@@ -1,33 +1,58 @@
 #!/bin/bash
 
-cd src
+MonitoredFileList=(
+    [0]="src/*.cpp" 
+    [1]="src/*.h")
 
-rm -v sketch_dec18a/*.cpp
-rm -v sketch_dec18a/*.h
+copyFileToTargetDirs() {
+    sourceFileName=$1
+    cp -v $sourceFileName ./src/sketch_dec18a/
+    cp -v $sourceFileName ./src/TRMO_demo/
+    cp -v $sourceFileName ./src/SCR_demo/
+    cp -v $sourceFileName ./src/ctrl_device/
+}
 
-cp -v *.cpp sketch_dec18a/
-cp -v *.h sketch_dec18a/
+declare -A FileToDateMap
 
-#####################
+loadModDateByFile() {
+    echo "Scanning Source Files for Monitoring:"
+    for i in ${MonitoredFileList[*]}; do
+        dt=$(date -r $i)
+        echo $i "    -->>    " $dt
+        FileToDateMap[$i]=$dt
+    done
 
-rm -v TRMO_demo/*.cpp
-rm -v TRMO_demo/*.h
+    echo
+    echo "Making Fresh Copy:"
+    for i in ${MonitoredFileList[*]}; do
+        copyFileToTargetDirs $i
+    done
+}
 
-cp -v *.cpp TRMO_demo/
-cp -v *.h TRMO_demo/
+checkModifications() {
+    for i in ${MonitoredFileList[*]}; do
+        dt=$(date -r $i)
+        oldDt=${FileToDateMap[$i]}
+        if [[ "$oldDt" != "$dt" ]];
+        then
+            echo
+            echo $i " was modified"
+            FileToDateMap[$i]=$dt
+            copyFileToTargetDirs $i
+        fi
+    done
+}
 
-#####################
+loadModDateByFile
 
-rm -v SCR_demo/*.cpp
-rm -v SCR_demo/*.h
+echo
+echo "Monitoring Active; Press [CTRL+C] to stop..."
 
-cp -v *.cpp SCR_demo/
-cp -v *.h SCR_demo/
+while :
+do
+    checkModifications
+	sleep 5
+done
 
-#####################
+echo
 
-rm -v ctrl_device/*.cpp
-rm -v ctrl_device/*.h
-
-cp -v *.cpp ctrl_device/
-cp -v *.h ctrl_device/
