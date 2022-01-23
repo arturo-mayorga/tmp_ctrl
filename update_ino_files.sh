@@ -1,6 +1,5 @@
 #!/bin/bash
 
-declare -A B
 MonitoredFileList=(
     [0]="src/*.cpp" 
     [1]="src/*.h")
