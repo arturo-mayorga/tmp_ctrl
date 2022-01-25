@@ -1,11 +1,19 @@
 #ifndef message_h
 #define message_h
 
-struct Message
+class Message
 {
+public:
     char type;
     int numParams;
     int *params;
+
+    Message(int numP, char t){
+        numParams = numP;
+        type = t;
+        params = new int[numParams];
+    }
+
     ~Message(){ delete this->params; }
 };
 
