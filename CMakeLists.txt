@@ -42,6 +42,9 @@ add_executable(
 
   src/tests/servo-system.t.cpp
   src/servo-system.cpp
+
+  src/tests/bt-message-system.t.cpp
+  src/bt-message-system.cpp
 )
 
 target_link_libraries(

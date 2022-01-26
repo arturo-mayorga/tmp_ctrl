@@ -83,3 +83,14 @@ TEST(MessageReader, TotalMessageLengthMustBeUnder100)
   sendString(reader, "{K:12345:12345:12345:12345:12345:12345:12345:12345:12345:12345:12345:12345:12345:12345:12345:123450}", true);
   sendString(reader, "{K:12345:12345:12345:12345:12345:12345:12345:12345:12345:12345:12345:12345:12345:12345:12345:1234500}", false);
 }
+
+TEST(MessageReader, MessageToString)
+{
+  Message msg(2, MSG_TYPE_SET_KNOB);
+  msg.params[0] = 12;
+  msg.params[1] = 556;
+
+  char buffer[100];
+  MessageReader::messageToString(&msg, buffer);
+  EXPECT_STREQ(buffer,"{K:12:556}");
+}

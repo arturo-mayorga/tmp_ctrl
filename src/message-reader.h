@@ -24,6 +24,7 @@ public:
     MessageReader(ILogger *logger);
     bool addByte(int byte);
     Message *getMessage();
+    static void messageToString(Message *msg, char *buffer);
 };
 
 #endif

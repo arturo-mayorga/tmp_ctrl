@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include "message-reader.h"
 
 MessageReader::MessageReader(ILogger *logger)
@@ -86,11 +87,9 @@ bool MessageReader::_processMessage()
                 return false;
             }
 
-            Message *msg = new Message();
+            // message type is always the first char after the start token
+            Message *msg = new Message(_numDelim, buffer[1]);
             int currentParam = 0;
-            msg->numParams = this->_numDelim;
-            msg->params = new int[msg->numParams];
-            msg->type = this->buffer[1]; // message type is always the first char after the start token
 
             int j = 3; //the first valid param char is always at index 3
             int paramBufferOffset = j;
@@ -127,4 +126,21 @@ bool MessageReader::_processMessage()
         }
     }
     return false;
+}
+
+void MessageReader::messageToString(Message *msg, char *buffer)
+{
+    buffer[0]=MSG_START;
+    buffer[1]=msg->type;
+
+    int currentI = 2;
+    for (int i = 0; i < msg->numParams; i++)
+    {
+         buffer[currentI]=MSG_PARAM_DELIM;
+         currentI++;
+         itoa(msg->params[i], &buffer[currentI], 10);
+         currentI += (int)strlen(&buffer[currentI]);
+    }
+    buffer[currentI]=MSG_END;
+    buffer[currentI+1]=0;
 }
